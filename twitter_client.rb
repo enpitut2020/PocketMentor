@@ -17,4 +17,15 @@ class TwitterClient
     @client.update(str)
   end
 
+  def getReplies
+    @client.mentions_timeline.each do |tweet|
+      printTweet(tweet)
+    end
+  end
+
+  def printTweet(tweet)
+      puts "\e[33m" + tweet.user.name + "\e[32m" + "[ID:" + tweet.user.screen_name + "]"
+      puts "\e[0m" + tweet.text
+  end
+
 end
