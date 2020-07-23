@@ -17,10 +17,18 @@ class TwitterClient
     @client.update(str)
   end
 
+  def getReply
+    @client.mentions_timeline.each do |tweet|
+      puts "\e[33m" + tweet.user.name + "\e[32m" + "[ID:" + tweet.user.screen_name + "]"
+      puts "\e[0m" + tweet.text
+    end
+  end
+
 end
 
 #main 
 if __FILE__ == $0
     client = TwitterClient.new()
-    client.tweet("tweet from api")
+    # client.tweet("tweet from api")
+    client.getReply
 end
