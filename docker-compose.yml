@@ -3,6 +3,6 @@ services:
   test:
     build: .
     volumes:
-      - $PWD:/working
+      - .:/working
     container_name: pocket_mentor 
     working_dir: /working 
