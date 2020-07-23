@@ -3,6 +3,7 @@ services:
   test:
     build: .
     volumes:
-      - .:/working
+      - .:/opt/app
     container_name: pocket_mentor 
-    working_dir: /working 
+    working_dir: /opt/app
+    command: /bin/sh -c "while sleep 1000; do :; done"
