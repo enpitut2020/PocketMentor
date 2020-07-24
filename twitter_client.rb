@@ -18,16 +18,16 @@ class TwitterClient
   # ツイートをします
   # @param [String] Tweet本文
   # @return [nil]
-  def send_tweet(str)
-    @client.update(str)
+  def send_tweet(tweet_text)
+    @client.update(tweet_text)
   end
 
   # メンションする
   # @param [String] Tweet本文
   # @param [Integer] TweetのID
   # @return [nil]
-  def mention(str, tweet_id)
-    @client.update(str, options={:in_reply_to_status_id=>tweet_id})
+  def mention(tweet_text, tweet_id)
+    @client.update(tweet_text, options={:in_reply_to_status_id=>tweet_id})
   end
 
   # リプライ5件を取得する
@@ -41,7 +41,7 @@ class TwitterClient
   end
 
   # Tweetを表示します
-  # @param [tweet] 1ツイート
+  # @param [tweet] ツイートオブジェクト
   # @return なし
   def printTweet(tweet)
       puts "\e[33m" + tweet.user.name + "\e[32m" + "[ID:" + tweet.user.screen_name + "]"
@@ -55,11 +55,10 @@ class TwitterClient
     @client.mentions_timeline(
         {:count => count}).each do |tweet|
             search_word = removeUserName(tweet)
-            search_word = removeInvalidChar(search_word)
+            # search_word = removeInvalidChar(search_word)
             puts search_word
             # send_tweet(reply_message)
             query = URI.encode_www_form(q: search_word)
-            puts query
             uri = "https://www.google.com/search?#{query}"
             puts uri
             reply_message = addUserName(uri,tweet.user.screen_name)
@@ -69,7 +68,7 @@ class TwitterClient
   end
 
   # ツイート本文から@MentorPocketを取り除きます
-  # @param [String] ツイート本文
+  # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(tweet)
     # return tweet.text.gsub(/\@MentorPocket/, "@#{tweet.user.screen_name}") 
@@ -78,18 +77,11 @@ class TwitterClient
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつけます
-  # @param [String] ツイート本文
+  # @param [String] ツイートテキスト
   # @param [String] 送信者のユーザー名
   # @return [String] 末尾にユーザー名のついたツイート本文
-  def addUserName(tweet, user_name)
-    return "#{tweet}\n@#{user_name}"
-  end
-
-  # ツイート本文から@MentorPocketを取り除きます
-  # @param [String] ツイート本文の内容
-  # @return [String] ユーザ名が取り除かれたツイート本文
-  def removeInvalidChar(str)
-    return str.gsub(/\s/, "")
+  def addUserName(tweet_text, user_name)
+    return "#{tweet_text}\n@#{user_name}"
   end
 
 end
