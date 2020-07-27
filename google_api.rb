@@ -22,7 +22,7 @@ class MyGoogleCustomSearcher
   # @return [hash] 検索結果のハッシュ
   def search(phrase="プリン", num=3, output=false)
     query = {
-      num: 3,
+      num: num,
       start: 1,
       cr: 25,
       cx: @CSE_ID
@@ -31,7 +31,7 @@ class MyGoogleCustomSearcher
     hash = JSON.parse(json)
     puts json
     if output
-      File.open("result_#{query["q"]}.json", 'w') do |file|
+      File.open("search_json/result_#{phrase}.json", 'w') do |file|
         str = JSON.dump(hash, file)
       end
     end
