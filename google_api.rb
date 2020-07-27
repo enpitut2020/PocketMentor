@@ -29,7 +29,7 @@ class MyGoogleCustomSearcher
     }
     json = @searcher.list_cses(phrase, query).to_json
     hash = JSON.parse(json)
-    puts json
+    # puts json
     if output
       File.open("search_json/result_#{phrase}.json", 'w') do |file|
         str = JSON.dump(hash, file)
