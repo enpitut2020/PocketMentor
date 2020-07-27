@@ -2,4 +2,8 @@ require './twitter_client'
 
 client = TwitterClient.new()
 
-client.sendReplies(2)
+loop {
+    client.send_tweet(Time.new)
+    one_minites = 1 * 60
+    sleep(one_minites)
+}
