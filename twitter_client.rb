@@ -89,8 +89,8 @@ class TwitterClient
     message = ""
     hash["items"].each do |item|
         message << "title : #{item["title"]}\n" 
-        # message << "URL : #{item["htmlFormattedUrl"]}\n"
-        # message << "ImagesURL : #{item["pagemap"]["cse_image"][0]["src"]}\n"
+        message << "URL : #{item["htmlFormattedUrl"]}\n"
+        message << "ImagesURL : #{item["pagemap"]["cse_image"][0]["src"]}\n"
     end
     return message
   end
