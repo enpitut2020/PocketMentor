@@ -1,6 +1,6 @@
 require 'json'
 
-filename='search_json/test_univ_Tsukuba.json'
+filename='search_json/result_pudding.json'
 File.open(filename) do |file|
     hash=JSON.load(file)
     hash["items"].each do |item|

@@ -55,9 +55,7 @@ class TwitterClient
     @client.mentions_timeline(
         {:count => count}).each do |tweet|
             search_word = removeUserName(tweet)
-            # search_word = removeInvalidChar(search_word)
             puts search_word
-            # send_tweet(reply_message)
             query = URI.encode_www_form(q: search_word)
             uri = "https://www.google.com/search?#{query}"
             puts uri
@@ -82,6 +80,19 @@ class TwitterClient
   # @return [String] 末尾にユーザー名のついたツイート本文
   def addUserName(tweet_text, user_name)
     return "#{tweet_text}\n@#{user_name}"
+  end
+
+  # google_apiからhashを受け取って，リプライメッセージを作成する
+  # @param [hash] 検索後のハッシュ
+  # @return [String] ツイート本文
+  def createRecommendMessage(hash)
+    message = ""
+    hash["items"].each do |item|
+        message << "title : #{item["title"]}\n" 
+        message << "URL : #{item["htmlFormattedUrl"]}\n"
+        message << "ImagesURL : #{item["pagemap"]["cse_image"][0]["src"]}\n"
+    end
+    return message
   end
 
 end
