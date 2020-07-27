@@ -14,10 +14,10 @@ query = {
   num: 3,
   start: 1,
   cr: 25,
-  cx: CSE_ID
-  q: "スパイスカレー"
+  cx: CSE_ID,
+  q: "プリン"
 }
-
+json=searcher.list_cses(query).to_json
 hash=JSON.parse(json)
 
 File.open("result_#{query["q"]}.json", 'w') do |file|
