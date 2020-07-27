@@ -84,13 +84,12 @@ class TwitterClient
 
   # google_apiからhashを受け取って，リプライメッセージを作成する
   # @param [hash] 検索後のハッシュ
-  # @return [String] ツイート本文
+  # @return [String] 検索結果ツイート本文
   def createRecommendMessage(hash)
     message = ""
     hash["items"].each do |item|
-        message << "title : #{item["title"]}\n" 
-        message << "URL : #{item["htmlFormattedUrl"]}\n"
-        message << "ImagesURL : #{item["pagemap"]["cse_image"][0]["src"]}\n"
+        message << "#{item["title"]}\n" 
+        message << "#{item["link"]}\n"
     end
     return message
   end

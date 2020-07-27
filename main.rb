@@ -6,9 +6,7 @@ client = TwitterClient.new()
 # GoogleCustomSearchインスタンス
 gcs = MyGoogleCustomSearcher.new()
 
-phrase = 'ビーフストロガノフ' 
+phrase = '海鮮丼　作り方' 
 hash = gcs.search(phrase, num=1, output=true)
-puts hash
 message = client.createRecommendMessage(hash)
-puts message
 client.send_tweet(message)
