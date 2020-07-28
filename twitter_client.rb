@@ -20,6 +20,7 @@ class TwitterClient
     @gcs = MyGoogleCustomSearcher.new
 
     @recentTweetId = getRecentTweet()
+    @recentReplyId=getRecentReply()
   end
 
   # ツイートする
@@ -27,6 +28,7 @@ class TwitterClient
   # @return [nil]
   def send_tweet(tweet_text)
     @client.update(tweet_text)
+    puts 'tweeted'
   end
 
   # メンションする
@@ -40,11 +42,11 @@ class TwitterClient
 
   # リプライn件を取得する
   # @param [Int] 何件取得するか
-  # @return [array] Twittetオブジェクトn件
-  def getReplies(cnt=5)
+  # @return [Array] Twittetオブジェクトn件
+  def getReplies(cnt=20)
     tweets=[]
     @client.mentions_timeline(
-        {:count => cnt} ).each do |tweet|
+        options ={:count => cnt,:since_id=>@recentReplyId} ).each do |tweet|
       tweets.push(tweet)
     end
     return tweets
@@ -69,22 +71,11 @@ class TwitterClient
     end
   end
 
-  # リプライの形に整形
-  # @param [String] ツイートオブジェクト
-  # @return [String] リプライするツイート本文
-  def formatReply(tweet)
-    phrase = removeUserName(tweet)
-    hash = @gcs.search(phrase, num=1, output=false)
-    message = createRecommendMessage(hash)
-    reply_message = addUserName(message, tweet.user.screen_name)
-    return reply_message
-  end
-
   # ツイート本文から@MentorPocketを取り除く
-  # @param [String] ツイート本文（ツイートオブジェクト）
+  # @param [tweet] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(tweet)
-    return tweet.text.gsub(/\@MentorPocket/, "")
+    return tweet.text.gsub(/\@MentorPocket/, "").gsub(/\@/,"").sub(/\n/,"")
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつける
@@ -132,6 +123,13 @@ class TwitterClient
     return tweetId
   end
 
+  # 一番新しいリプライツイートIDを取得する
+  # @param [nil] 
+  # @return [Integer] tweetId ツイートID　
+  def getRecentReply()
+    replyId = File.read(".recentReplyId.log").to_i
+    return replyId
+  end
   # 一番新しいツイートIDを保存する
   # @param [Integer] tweetId ツイートID
   # @return [nil]
@@ -141,4 +139,22 @@ class TwitterClient
     end
   end
 
+  # 最新リプライのIDをログに保存
+  # @param[Integer] tweetId ツイートID
+  # @return [nil]
+  def setRecentReply(tweetId)
+    File.open(".recentReplyId.log", 'w') do |file|
+      file.write(tweetId)
+    end
+  end
+  
+  # いまから保存するということメンションでツイートする
+  # @param [tweet] reply ツイートオブジェクト
+  # @return [nil]
+  def sendSavingMessage(reply)
+    message= removeUserName(reply)
+    screen_name = reply.user.screen_name.gsub(/\@MentorPocket/,"")
+    message="「#{message}」を保存しました!\n「ひま」とツイートしたときに記事とともに教えるよ!。@#{screen_name} "
+    mention(message,reply.id)
+  end
 end
