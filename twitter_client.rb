@@ -43,9 +43,11 @@ class TwitterClient
   # @return [nil]
   def getReplies
     @client.mentions_timeline(
-        {:count => 5}).each do |tweet|
-      printTweet(tweet)
-    end
+      {:count => 3}).each do |tweet|
+        puts tweet.id
+        puts tweet.user.screen_name
+        puts tweet.text + "\n"
+      end
   end
 
   # Tweetを表示
@@ -63,7 +65,7 @@ class TwitterClient
     @client.mentions_timeline(
       {:count => count}).each do |tweet|
         phrase = removeUserName(tweet)
-        hash = @gcs.search(phrase, num=1, output=true)
+        hash = @gcs.search(phrase, num=1, output=false)
         message = createRecommendMessage(hash)
         reply_message = addUserName(message, tweet.user.screen_name)
         mention(reply_message, tweet.id)
