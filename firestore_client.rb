@@ -73,13 +73,12 @@ class FirestoreClient
     return tweets
   end
 
-  # ユーザが事前に登録したやりたいことツイートを返す
+  # ユーザが事前に登録したやりたいことの中で最新のツイートを返す
   # @param [Integer] ユーザーID
-  # @return [Array] ツイートオブジェクトの配列
-  def getUserAllWishTweet(user_id)
-    firestore_client.getTweets(user_id).each do |users_tweet|
-      puts users_tweet
-    end 
+  # @return [Object] firebaseのデータオブジェクト
+  def getUserRecentWishTweet(user_id)
+    recent_wish_tweets = getTweets(user_id)
+    return recent_wish_tweets[0] unless recent_wish_tweets.empty?
   end
 
 end

@@ -31,9 +31,10 @@ loop {
   else
     boredTweets.each do |tweet|
       #暇と呟いたユーザーのツイートたち　の配列
-      firestore_client.getUserAllWishTweet(tweet.user.id)
       # ツイート渡す
       # やりたいことを1こ受け取る
+      puts tweet.user.screen_name
+      puts firestore_client.getUserRecentWishTweet(tweet.user.id)
       # 記事をmention
       # puts tweet.user.screen_name
       # puts tweet.text
