@@ -1,4 +1,5 @@
 .devcontainer
 .env
 .recentTweetId.log
+.recentReplyId.log
 pocketmentor-455ae-firebase-adminsdk-bw1dg-9626bcc8d7.json
