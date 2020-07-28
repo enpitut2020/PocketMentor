@@ -73,18 +73,28 @@ class TwitterClient
   # @param [String] ツイートオブジェクト
   # @return [String] リプライするツイート本文
   def formatReply(tweet)
-    phrase = removeUserName(tweet)
+    phrase = removeUserName(tweet.text)
     hash = @gcs.search(phrase, num=1, output=false)
     message = createRecommendMessage(hash)
     reply_message = addUserName(message, tweet.user.screen_name)
     return reply_message
   end
 
+  # 入力したテキストから@MentorPocketを取り除く
+  # @param [String] ツイート本文（ツイートオブジェクト）
+  # @return [String] ユーザ名が取り除かれたツイート本文
+  def createRecommendMessageFromText(tweet_text)
+    phrase = removeUserName(tweet_text)
+    hash = @gcs.search(phrase, num=1, output=false)
+    message = createRecommendMessage(hash)
+    return message
+  end
+
   # ツイート本文から@MentorPocketを取り除く
   # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
-  def removeUserName(tweet)
-    return tweet.text.gsub(/\@MentorPocket/, "")
+  def removeUserName(text)
+    return text.gsub(/\@MentorPocket/, "")
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつける
@@ -117,7 +127,7 @@ class TwitterClient
     end
     boredTweets = []
     recentTweets.each do |tweet|
-      if tweet.text =~ /暇/
+      if tweet.text =~ /暇/ and tweet.user.screen_name != "MentorPocket"
         boredTweets << tweet
       end
     end

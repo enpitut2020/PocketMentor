@@ -67,7 +67,6 @@ class FirestoreClient
     tweets_ref = @firestore_client.col "users/#{user_id}/tweets"
     tweets=[]
     tweets_ref.get do |tweet|
-      # puts "#{tweet.document_id} data: #{tweet.data}."
       tweets.push(tweet.data)
     end
     return tweets
