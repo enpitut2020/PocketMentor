@@ -96,5 +96,12 @@ class TwitterClient
     end
     return message
   end
+  
+  # 「ひま」と呟いたツイートを取得する
+  # @param [Integer] count 取得する数
+  # @return []
+  def getBoredTweets(count)
+    return @client.home_timeline({:count => count, :since_id => @recentTweetId})
+  end
 
 end
