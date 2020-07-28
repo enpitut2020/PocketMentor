@@ -77,7 +77,8 @@ class FirestoreClient
   # @return [Object] firebaseのデータオブジェクト
   def getUserRecentWishTweet(user_id)
     recent_wish_tweets = getTweets(user_id)
-    return recent_wish_tweets[0] unless recent_wish_tweets.empty?
+    
+    return recent_wish_tweets.sample(1)[0] unless recent_wish_tweets.empty?
   end
 
 end 
