@@ -67,19 +67,17 @@ class FirestoreClient
     tweets_ref = @firestore_client.col "users/#{user_id}/tweets"
     tweets=[]
     tweets_ref.get do |tweet|
-      # puts "#{tweet.document_id} data: #{tweet.data}."
       tweets.push(tweet.data)
     end
     return tweets
   end
 
-  # ユーザが事前に登録したやりたいことツイートを返す
+  # ユーザが事前に登録したやりたいことの中で最新のツイートを返す
   # @param [Integer] ユーザーID
-  # @return [Array] ツイートオブジェクトの配列
-  def getUserAllWishTweet(user_id)
-    getTweets(user_id).each do |users_tweet|
-      puts users_tweet
-    end 
+  # @return [Object] firebaseのデータオブジェクト
+  def getUserRecentWishTweet(user_id)
+    recent_wish_tweets = getTweets(user_id)
+    return recent_wish_tweets[0] unless recent_wish_tweets.empty?
   end
 
 end 

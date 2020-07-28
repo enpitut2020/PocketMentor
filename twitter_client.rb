@@ -71,11 +71,21 @@ class TwitterClient
     end
   end
 
-  # ツイート本文から@MentorPocketを取り除く
-  # @param [tweet] ツイート本文（ツイートオブジェクト）
+  # 入力したテキストから@MentorPocketを取り除く
+  # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
-  def removeUserName(tweet)
-    return tweet.text.gsub(/\@MentorPocket/, "").gsub(/\@/,"").sub(/\n/,"")
+  def createRecommendMessageFromText(tweet_text)
+    phrase = removeUserName(tweet_text)
+    hash = @gcs.search(phrase, num=1, output=false)
+    message = createRecommendMessage(hash)
+    return message
+  end
+
+  # ツイート本文から@MentorPocketを取り除く
+  # @param [String] ツイート本文
+  # @return [String] ユーザ名が取り除かれたツイート本文
+  def removeUserName(text)
+    return text.gsub(/\@MentorPocket/, "").gsub(/\@/,"").sub(/\n/,"")
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつける
@@ -108,7 +118,7 @@ class TwitterClient
     end
     boredTweets = []
     recentTweets.each do |tweet|
-      if tweet.text =~ /暇/
+      if tweet.text =~ /暇/ and tweet.user.screen_name != "MentorPocket"
         boredTweets << tweet
       end
     end
@@ -152,7 +162,7 @@ class TwitterClient
   # @param [tweet] reply ツイートオブジェクト
   # @return [nil]
   def sendSavingMessage(reply)
-    message= removeUserName(reply)
+    message= removeUserName(reply.text)
     screen_name = reply.user.screen_name.gsub(/\@MentorPocket/,"")
     message="「#{message}」を保存しました!\n「ひま」とツイートしたときに記事とともに教えるよ!。@#{screen_name} "
     mention(message,reply.id)
