@@ -18,6 +18,8 @@ class TwitterClient
 
     # google api instance
     @gcs = MyGoogleCustomSearcher.new
+
+    @recentTweetId = getRecentTweet()
   end
 
   # ツイートする
@@ -102,6 +104,23 @@ class TwitterClient
   # @return []
   def getBoredTweets(count)
     return @client.home_timeline({:count => count, :since_id => @recentTweetId})
+  end
+
+  # 一番新しいツイートIDを取得する
+  # @param [nil] 
+  # @return [Integer] tweetId ツイートID　
+  def getRecentTweet()
+    tweetId = File.read(".recentTweetId.log").to_i
+    return tweetId
+  end
+
+  # 一番新しいツイートIDを保存する
+  # @param [Integer] tweetId ツイートID
+  # @return [nil]
+  def setRecentTweet(tweetId)
+    File.open(".recentTweetId.log", 'w') do |file|
+      file.write(tweetId)
+    end
   end
 
 end
