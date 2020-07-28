@@ -30,14 +30,16 @@ class TwitterClient
     @client.update(tweet_text, options={:in_reply_to_status_id=>tweet_id})
   end
 
-  # リプライ5件を取得する
-  # @param [nil]
-  # @return [nil]
-  def getReplies
+  # リプライn件を取得する
+  # @param [Int] 何件取得するか
+  # @return [array] Twittetオブジェクトn件
+  def getReplies(cnt=5)
+    tweets=[]
     @client.mentions_timeline(
-        {:count => 5}).each do |tweet|
-      printTweet(tweet)
+        {:count => 2} ).each do |tweet|
+      tweets.push(tweet)
     end
+    return tweets
   end
 
   # Tweetを表示します
