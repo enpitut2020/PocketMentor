@@ -77,9 +77,9 @@ class FirestoreClient
   # @param [Integer] ユーザーID
   # @return [Array] ツイートオブジェクトの配列
   def getUserAllWishTweet(user_id)
-    firestore_client.getTweets(user_id).each do |users_tweet|
+    getTweets(user_id).each do |users_tweet|
       puts users_tweet
     end 
   end
 
-end
+end 
