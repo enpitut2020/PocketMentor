@@ -1,0 +1,132 @@
+{
+  "context": {
+    "title": "カスタム検索エンジン"
+  },
+  "items": [
+    {
+      "cacheId": "kcVEwOB2O_QJ",
+      "displayLink": "www.tsukuba.ac.jp",
+      "formattedUrl": "www.tsukuba.ac.jp/",
+      "htmlFormattedUrl": "www.tsukuba.ac.jp/",
+      "htmlSnippet": "<b>筑波大学</b>公式サイト.",
+      "htmlTitle": "<b>筑波大学</b>",
+      "kind": "customsearch#result",
+      "link": "http://www.tsukuba.ac.jp/",
+      "pagemap": {
+        "cse_thumbnail": [
+          {
+            "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT6YoQ5PrTXsoq18GJ8UuaWvpF1ZPNVpKC-V7IiK6W4Bl5ZA8U-3lGis76H",
+            "width": "300",
+            "height": "168"
+          }
+        ],
+        "cse_image": [
+          {
+            "src": "http://www.tsukuba.ac.jp/images/main03.jpg"
+          }
+        ]
+      },
+      "snippet": "筑波大学公式サイト.",
+      "title": "筑波大学"
+    },
+    {
+      "cacheId": "M5MDyMMBFVMJ",
+      "displayLink": "ja.wikipedia.org",
+      "formattedUrl": "https://ja.wikipedia.org/wiki/筑波大学",
+      "htmlFormattedUrl": "https://ja.wikipedia.org/wiki/<b>筑波大学</b>",
+      "htmlSnippet": "<b>筑波大学</b>（つくばだいがく、英語: University of Tsukuba）は、茨城県つくば市天王台一<br>\n丁目1番地1に本部を置く日本の国立大学である。1973年に設置された。大学の略称は<br>\n特にないが、筑波（つくば）、<b>筑波大</b>（つくばだい）。 文部科学省が実施しているスーパー<br>\n&nbsp;...",
+      "htmlTitle": "<b>筑波大学</b> - Wikipedia",
+      "kind": "customsearch#result",
+      "link": "https://ja.wikipedia.org/wiki/%E7%AD%91%E6%B3%A2%E5%A4%A7%E5%AD%A6",
+      "pagemap": {
+        "cse_thumbnail": [
+          {
+            "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVku15JP4d9zirkpJ_Z4cub3Q298dfuOOQRKNXm6Pmqjy-NVGNtu8xly-Z",
+            "width": "259",
+            "height": "194"
+          }
+        ],
+        "metatags": [
+          {
+            "referrer": "origin",
+            "og:image": "https://upload.wikimedia.org/wikipedia/ja/f/fd/Univoftsukuba2006.jpg"
+          }
+        ],
+        "cse_image": [
+          {
+            "src": "https://upload.wikimedia.org/wikipedia/ja/f/fd/Univoftsukuba2006.jpg"
+          }
+        ]
+      },
+      "snippet": "筑波大学（つくばだいがく、英語: University of Tsukuba）は、茨城県つくば市天王台一\n丁目1番地1に本部を置く日本の国立大学である。1973年に設置された。大学の略称は\n特にないが、筑波（つくば）、筑波大（つくばだい）。 文部科学省が実施しているスーパー\n ...",
+      "title": "筑波大学 - Wikipedia"
+    },
+    {
+      "cacheId": "z3TxwIzCLZUJ",
+      "displayLink": "www.tsukuba.ac.jp",
+      "formattedUrl": "https://www.tsukuba.ac.jp/organization/",
+      "htmlFormattedUrl": "https://www.tsukuba.ac.jp/organization/",
+      "htmlSnippet": "<b>筑波大学</b>の教育組織 学群・大学院.",
+      "htmlTitle": "<b>筑波大学</b>｜学群・大学院",
+      "kind": "customsearch#result",
+      "link": "https://www.tsukuba.ac.jp/organization/",
+      "pagemap": {
+        "cse_thumbnail": [
+          {
+            "src": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTjItAHf-21PkEoMq5w4pe-01_d4WpoWKjYg_Yjp6WuuMiw-BcqbtOtKoQ",
+            "width": "374",
+            "height": "135"
+          }
+        ],
+        "cse_image": [
+          {
+            "src": "https://www.tsukuba.ac.jp/organization/images/category.jpg"
+          }
+        ]
+      },
+      "snippet": "筑波大学の教育組織 学群・大学院.",
+      "title": "筑波大学｜学群・大学院"
+    }
+  ],
+  "kind": "customsearch#search",
+  "queries": {
+    "nextPage": [
+      {
+        "count": 3,
+        "cr": "25",
+        "cx": "005365018173549515066:vq6u-qypqcq",
+        "inputEncoding": "utf8",
+        "outputEncoding": "utf8",
+        "safe": "off",
+        "searchTerms": "筑波大学",
+        "startIndex": 4,
+        "title": "Google Custom Search - 筑波大学",
+        "totalResults": "12900000"
+      }
+    ],
+    "request": [
+      {
+        "count": 3,
+        "cr": "25",
+        "cx": "005365018173549515066:vq6u-qypqcq",
+        "inputEncoding": "utf8",
+        "outputEncoding": "utf8",
+        "safe": "off",
+        "searchTerms": "筑波大学",
+        "startIndex": 1,
+        "title": "Google Custom Search - 筑波大学",
+        "totalResults": "12900000"
+      }
+    ]
+  },
+  "searchInformation": {
+    "formattedSearchTime": "0.47",
+    "formattedTotalResults": "12,900,000",
+    "searchTime": 0.468881,
+    "totalResults": "12900000"
+  },
+  "url": {
+    "template": "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&relatedSite={relatedSite?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json",
+    "type": "application/json"
+  }
+}

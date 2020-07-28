@@ -1,46 +1,56 @@
 require "twitter"
 require "dotenv"
 require "uri"
+require "./google_api"
 Dotenv.load
 
 # Twitterアカウントを操作するクラス
 class TwitterClient
 
   def initialize()
+    # twitter client
     @client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV["CONSUMER_KEY"]
       config.consumer_secret     = ENV["CONSUMER_SECRET"]
       config.access_token        = ENV["ACCESS_TOKEN"]
       config.access_token_secret = ENV["ACCESS_TOKEN_SECRET"]
     end
+
+    # google api instance
+    @gcs = MyGoogleCustomSearcher.new
+
+    @recentTweetId = getRecentTweet()
   end
 
-  # ツイートをします
+  # ツイートする
   # @param [String] Tweet本文
   # @return [nil]
   def send_tweet(tweet_text)
     @client.update(tweet_text)
   end
 
-  # メンションする
+  # メンション
   # @param [String] Tweet本文
   # @param [Integer] TweetのID
   # @return [nil]
   def mention(tweet_text, tweet_id)
     @client.update(tweet_text, options={:in_reply_to_status_id=>tweet_id})
+    puts 'mentioned'
   end
 
-  # リプライ5件を取得する
+  # リプライ5件を取得
   # @param [nil]
   # @return [nil]
   def getReplies
     @client.mentions_timeline(
-        {:count => 5}).each do |tweet|
-      printTweet(tweet)
-    end
+      {:count => 3}).each do |tweet|
+        puts tweet.id
+        puts tweet.user.screen_name
+        puts tweet.text + "\n"
+      end
   end
 
-  # Tweetを表示します
+  # Tweetを表示
   # @param [tweet] ツイートオブジェクト
   # @return なし
   def printTweet(tweet)
@@ -48,26 +58,21 @@ class TwitterClient
       puts "\e[0m" + tweet.text
   end
 
-  # リプライを送信します。
+  # リプライを送信
   # @param [Integer] count 返信個数
   # @return [nil]
   def sendReplies(count)
     @client.mentions_timeline(
-        {:count => count}).each do |tweet|
-            search_word = removeUserName(tweet)
-            # search_word = removeInvalidChar(search_word)
-            puts search_word
-            # send_tweet(reply_message)
-            query = URI.encode_www_form(q: search_word)
-            uri = "https://www.google.com/search?#{query}"
-            puts uri
-            reply_message = addUserName(uri,tweet.user.screen_name)
-            puts reply_message
-            mention(reply_message, tweet.id)
+      {:count => count}).each do |tweet|
+        phrase = removeUserName(tweet)
+        hash = @gcs.search(phrase, num=1, output=false)
+        message = createRecommendMessage(hash)
+        reply_message = addUserName(message, tweet.user.screen_name)
+        mention(reply_message, tweet.id)
     end
   end
 
-  # ツイート本文から@MentorPocketを取り除きます
+  # ツイート本文から@MentorPocketを取り除く
   # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(tweet)
@@ -76,12 +81,48 @@ class TwitterClient
     return tweet.text.gsub(/\@MentorPocket/, "")
   end
 
-  # ツイート本文の末尾に送信者のユーザー名をつけます
+  # ツイート本文の末尾に送信者のユーザー名をつける
   # @param [String] ツイートテキスト
   # @param [String] 送信者のユーザー名
   # @return [String] 末尾にユーザー名のついたツイート本文
   def addUserName(tweet_text, user_name)
     return "#{tweet_text}\n@#{user_name}"
+  end
+
+  # google_apiからhashを受け取って，リプライメッセージを作成する
+  # @param [hash] 検索後のハッシュ
+  # @return [String] 検索結果ツイート本文
+  def createRecommendMessage(hash)
+    message = "あなたへのおススメ記事はこれ！\n"
+    hash["items"].each do |item|
+        message << "#{item["title"]}\n" 
+        message << "#{item["link"]}\n"
+    end
+    return message
+  end
+  
+  # 「ひま」と呟いたツイートを取得する
+  # @param [Integer] count 取得する数
+  # @return []
+  def getBoredTweets(count)
+    return @client.home_timeline({:count => count, :since_id => @recentTweetId})
+  end
+
+  # 一番新しいツイートIDを取得する
+  # @param [nil] 
+  # @return [Integer] tweetId ツイートID　
+  def getRecentTweet()
+    tweetId = File.read(".recentTweetId.log").to_i
+    return tweetId
+  end
+
+  # 一番新しいツイートIDを保存する
+  # @param [Integer] tweetId ツイートID
+  # @return [nil]
+  def setRecentTweet(tweetId)
+    File.open(".recentTweetId.log", 'w') do |file|
+      file.write(tweetId)
+    end
   end
 
 end
