@@ -38,16 +38,16 @@ class TwitterClient
     puts 'mentioned'
   end
 
-  # リプライ5件を取得
-  # @param [nil]
-  # @return [nil]
-  def getReplies
+  # リプライn件を取得する
+  # @param [Int] 何件取得するか
+  # @return [array] Twittetオブジェクトn件
+  def getReplies(cnt=5)
+    tweets=[]
     @client.mentions_timeline(
-      {:count => 3}).each do |tweet|
-        puts tweet.id
-        puts tweet.user.screen_name
-        puts tweet.text + "\n"
-      end
+        {:count => cnt} ).each do |tweet|
+      tweets.push(tweet)
+    end
+    return tweets
   end
 
   # Tweetを表示
