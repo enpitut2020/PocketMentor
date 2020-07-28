@@ -29,7 +29,7 @@ class TwitterClient
     @client.update(tweet_text)
   end
 
-  # メンション
+  # メンションする
   # @param [String] Tweet本文
   # @param [Integer] TweetのID
   # @return [nil]
@@ -50,7 +50,7 @@ class TwitterClient
     return tweets
   end
 
-  # Tweetを表示
+  # Tweetをコンソール表示(ユーザ名 @名前 ツイート内容)
   # @param [tweet] ツイートオブジェクト
   # @return なし
   def printTweet(tweet)
@@ -62,22 +62,28 @@ class TwitterClient
   # @param [Integer] count 返信個数
   # @return [nil]
   def sendReplies(count)
-    @client.mentions_timeline(
-      {:count => count}).each do |tweet|
-        phrase = removeUserName(tweet)
-        hash = @gcs.search(phrase, num=1, output=false)
-        message = createRecommendMessage(hash)
-        reply_message = addUserName(message, tweet.user.screen_name)
-        mention(reply_message, tweet.id)
+    replies = getReplies(count)
+    replies.each do |tweet|
+      reply_message = formatReply(tweet)
+      mention(reply_message, tweet.id)
     end
+  end
+
+  # リプライの形に整形
+  # @param [String] ツイートオブジェクト
+  # @return [String] リプライするツイート本文
+  def formatReply(tweet)
+    phrase = removeUserName(tweet)
+    hash = @gcs.search(phrase, num=1, output=false)
+    message = createRecommendMessage(hash)
+    reply_message = addUserName(message, tweet.user.screen_name)
+    return reply_message
   end
 
   # ツイート本文から@MentorPocketを取り除く
   # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(tweet)
-    # return tweet.text.gsub(/\@MentorPocket/, "@#{tweet.user.screen_name}") 
-    # ^\n  
     return tweet.text.gsub(/\@MentorPocket/, "")
   end
 
@@ -103,9 +109,8 @@ class TwitterClient
   
   # 「ひま」と呟いたツイートを取得する
   # @param [Integer] count 取得する数
-  # @return []
+  # @return [Array] boredTweets 暇ツイートオブジェクトの配列
   def getBoredTweets()
-    # 「暇」パターン
     recentTweets = @client.home_timeline({:since_id => @recentTweetId})
     if recentTweets == nil
       return nil

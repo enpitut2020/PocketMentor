@@ -23,18 +23,30 @@ end
 SLEEP_TIME = 2 * 60
 
 loop {
-  # Twitterインスタンス
+  # 暇ツイートパート
   boredTweets = twitter_client.getBoredTweets()
   if boredTweets.empty?
     puts "暇ツイートはありません．"
     puts "みんな忙しそう"
   else
     boredTweets.each do |tweet|
-      puts tweet.user.screen_name
-      puts tweet.text
+      #暇と呟いたユーザーのツイートたち　の配列
+      firestore_client.getUserAllWishTweet(tweet.user.id)
+      # ツイート渡す
+      # やりたいことを1こ受け取る
+      # 記事をmention
+      # puts tweet.user.screen_name
+      # puts tweet.text
     end
     twitter_client.setRecentTweet(boredTweets[0].id) unless boredTweets[0].nil?
   end
 
+  # メンション処理パート
+#  replies=getReplies(count)
+#  replies.each do |reply|
+#   twitter_client.formatReply(reply)
+#  end
+
+  # スリープ
   sleep(SLEEP_TIME)
 }
