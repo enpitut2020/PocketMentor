@@ -73,4 +73,13 @@ class FirestoreClient
     return tweets
   end
 
-end
+  # ユーザが事前に登録したやりたいことツイートを返す
+  # @param [Integer] ユーザーID
+  # @return [Array] ツイートオブジェクトの配列
+  def getUserAllWishTweet(user_id)
+    getTweets(user_id).each do |users_tweet|
+      puts users_tweet
+    end 
+  end
+
+end 
