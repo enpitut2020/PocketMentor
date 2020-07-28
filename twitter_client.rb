@@ -104,9 +104,9 @@ class TwitterClient
   # 「ひま」と呟いたツイートを取得する
   # @param [Integer] count 取得する数
   # @return []
-  def getBoredTweets(count)
+  def getBoredTweets()
     # 「暇」パターン
-    recentTweets = @client.home_timeline({:count => count, :since_id => @recentTweetId})
+    recentTweets = @client.home_timeline({:since_id => @recentTweetId})
     if recentTweets == nil
       return nil
     end
