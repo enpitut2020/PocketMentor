@@ -105,7 +105,18 @@ class TwitterClient
   # @param [Integer] count 取得する数
   # @return []
   def getBoredTweets(count)
-    return @client.home_timeline({:count => count, :since_id => @recentTweetId})
+    # 「暇」パターン
+    recentTweets = @client.home_timeline({:count => count, :since_id => @recentTweetId})
+    if recentTweets == nil
+      return nil
+    end
+    boredTweets = []
+    recentTweets.each do |tweet|
+      if tweet.text =~ /暇/
+        boredTweets << tweet
+      end
+    end
+    return boredTweets
   end
 
   # 一番新しいツイートIDを取得する
