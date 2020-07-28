@@ -37,7 +37,7 @@ class TwitterClient
   # @return [nil]
   def mention(tweet_text, tweet_id)
     @client.update(tweet_text, options={:in_reply_to_status_id=>tweet_id})
-    puts 'mentioned'
+    puts 'mentioned: ' + tweet_text
   end
 
   # リプライn件を取得する
@@ -71,13 +71,13 @@ class TwitterClient
     end
   end
 
-  # 入力したテキストから@MentorPocketを取り除く
+  # 入力したテキストから@MentorPocketを取り除き, 検索して URLをくっつけたメッセージを返す
   # @param [String] ツイート本文（ツイートオブジェクト）
   # @return [String] ユーザ名が取り除かれたツイート本文
   def createRecommendMessageFromText(tweet_text)
     phrase = removeUserName(tweet_text)
     hash = @gcs.search(phrase, num=1, output=false)
-    message = createRecommendMessage(hash)
+    message = createRecommendMessage(hash,phrase)
     return message
   end
 
@@ -99,8 +99,8 @@ class TwitterClient
   # google_apiからhashを受け取って，リプライメッセージを作成する
   # @param [hash] 検索後のハッシュ
   # @return [String] 検索結果ツイート本文
-  def createRecommendMessage(hash)
-    message = "あなたへのおススメ記事はこれ！\n"
+  def createRecommendMessage(hash,phrase='あなたへ')
+    message = "「#{phrase[0,50]}」のおススメ記事はこれ！\n"
     hash["items"].each do |item|
         message << "#{item["title"]}\n" 
         message << "#{item["link"]}\n"
@@ -164,7 +164,7 @@ class TwitterClient
   def sendSavingMessage(reply)
     message= removeUserName(reply.text)
     screen_name = reply.user.screen_name.gsub(/\@MentorPocket/,"")
-    message="「#{message}」を保存しました!\n「ひま」とツイートしたときに記事とともに教えるよ!。@#{screen_name} "
+    message="「#{message[0,50]}」を保存しました!\n「暇」とツイートしたときに記事とともに教えるよ!\n @#{screen_name} "
     mention(message,reply.id)
   end
 end
