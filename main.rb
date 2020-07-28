@@ -24,6 +24,6 @@ end
 
 tweets.each do | tweet | 
     firestore_client.getTweets(tweet.user.id).each do |users_tweet|
-        puts users_tweet.data
+        puts users_tweet
     end
 end

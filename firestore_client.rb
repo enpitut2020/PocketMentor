@@ -25,7 +25,8 @@ class FirestoreClient
   def saveUser(tweet)
     doc_ref = @firestore_client.doc "users/#{tweet.user.id}"
     doc_ref.set(
-      screen_name: tweet.user.screen_name
+      screen_name: tweet.user.screen_name,
+      last_update: Time.new
     )
   end
 
@@ -35,9 +36,11 @@ class FirestoreClient
   # @param [Object] Tweetオブジェクト 
   # @return [nil]
   def saveTweet(tweet)
-    tweet_ref = @firestore_client.doc "users/#{tweet.user.id}/tweets/#{tweet.user.id}"
+    tweet_ref = @firestore_client.doc "users/#{tweet.user.id}/tweets/#{tweet.id}"
     tweet_ref.set(
       tweet: tweet.text,
+      created_at: tweet.created_at,
+      is_done: false
     )
   end
 
@@ -47,17 +50,18 @@ class FirestoreClient
   # @param [Object] Tweetオブジェクト 
   # @return [nil]
   def saveReply(tweet)
-    reply_ref = @firestore_client.doc "users/#{tweet.user.id}/tweets/#{tweet.user.id}/replies/#{tweet.id}"
+    reply_ref = @firestore_client.doc "users/#{tweet.user.id}/tweets/#{tweet.id}/replies/#{tweet.id}"
     reply_ref.set(
       tweet: tweet.text,
+      created_at: tweet.created_at,
+      is_done: false
     )
   end
-
 
   # ユーザーが呟いた全てのやりたいことツイート
   # リプライ先のツイートの直に下保存する
   # @param [user_id] user_id (tweet.user.id)不変のid
-  # @return [Object] firestoreに保存してるツイートオブジェクト
+  # @return [String] firestoreに保存してるツイートの中身
   # tweet.data →{tweet: "tweet text"}
   def getTweets(user_id)
     tweets_ref = @firestore_client.col "users/#{user_id}/tweets"
