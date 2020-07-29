@@ -85,7 +85,7 @@ class TwitterClient
   # @param [String] ツイート本文
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(text)
-    return text.gsub(/\@MentorPocket/, "").gsub(/\@/,"").sub(/\n/,"")
+    return text.gsub(/\@MentorPocket/, "").gsub(/\＠MentorPocket/, "").gsub(/\@/,"").gsub(/\＠/,"").sub(/\n/,"")
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつける
