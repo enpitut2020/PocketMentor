@@ -85,7 +85,7 @@ class TwitterClient
   # @param [String] ツイート本文
   # @return [String] ユーザ名が取り除かれたツイート本文
   def removeUserName(text)
-    return text.gsub(/\@MentorPocket/, "").gsub(/\@/,"").sub(/\n/,"")
+    return text.gsub(/\@MentorPocket/, "").gsub(/\＠MentorPocket/, "").gsub(/\@/,"").gsub(/\＠/,"").sub(/\n/,"")
   end
 
   # ツイート本文の末尾に送信者のユーザー名をつける
@@ -133,6 +133,13 @@ class TwitterClient
     return tweetId
   end
 
+  # 一番新しいツイートIDを更新する
+  # @param [nil] 
+  # @return [nil] 
+  def reloadRecentTweetId()
+    @recentTweetId = getRecentTweet()
+  end
+
   # 一番新しいリプライツイートIDを取得する
   # @param [nil] 
   # @return [Integer] tweetId ツイートID　
@@ -140,6 +147,7 @@ class TwitterClient
     replyId = File.read(".recentReplyId.log").to_i
     return replyId
   end
+
   # 一番新しいツイートIDを保存する
   # @param [Integer] tweetId ツイートID
   # @return [nil]
@@ -156,6 +164,13 @@ class TwitterClient
     File.open(".recentReplyId.log", 'w') do |file|
       file.write(tweetId)
     end
+  end
+
+  # 一番新しいリプライIDを更新する
+  # @param [nil] 
+  # @return [nil] 
+  def reloadRecentReplyId()
+    @recentReplyId = getRecentReply()
   end
   
   # いまから保存するということメンションでツイートする
