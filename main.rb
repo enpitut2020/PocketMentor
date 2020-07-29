@@ -6,7 +6,7 @@ twitter_client = TwitterClient.new()
 firestore_client = FirestoreClient.new()
 
 
-SLEEP_TIME = 1 * 60
+SLEEP_TIME = 1 * 60 + 1
 
 loop {
   # # 暇ツイートパート
@@ -18,13 +18,10 @@ loop {
   else
     twitter_client.setRecentTweet(boredTweets[0].id) unless boredTweets[0].nil?
     boredTweets.reverse_each do |tweet|
-      # recent_wish_doc = firestore_client.getUserRecentWishTweet(tweet.user.id)
-      # message = twitter_client.createRecommendMessageFromText(recent_wish_doc[:tweet])
-      # reply_message = twitter_client.addUserName(message, tweet.user.screen_name)
-      # twitter_client.mention(reply_message, tweet.id)
-      puts tweet.id
-      puts tweet.user.screen_name
-      puts tweet.text + "\n"
+      recent_wish_doc = firestore_client.getUserRecentWishTweet(tweet.user.id)
+      message = twitter_client.createRecommendMessageFromText(recent_wish_doc[:tweet])
+      reply_message = twitter_client.addUserName(message, tweet.user.screen_name)
+      twitter_client.mention(reply_message, tweet.id)
     end
   end
   # メンション処理パート
