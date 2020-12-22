@@ -15,7 +15,7 @@
 - [katsuya](https://github.com/KindMaple)
 - [basshi](https://github.com/Kurorie)
 - [mei](https://github.com/mei28)
-- [niwa](https://github.com/yjunya)
+- [niwa](https://github.com/niwabarubossa)
 - [nanaka](https://github.com/nanaka0012)
 - [hotsukai](https://github.com/Hotsukai)
 
